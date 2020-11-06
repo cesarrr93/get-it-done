@@ -33,7 +33,7 @@ var displayRepos = function (repos, searchTerm) {
         var repoEl = document.createElement("a");
         repoEl.classList = "list-item flex-row justify-space-between align-center";
         repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
-        console.log("I am here que onda");
+        
         // create a span element to hold repository name
         var titleEl = document.createElement("span");
         titleEl.textContent = repoName;

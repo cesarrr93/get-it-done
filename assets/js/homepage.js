@@ -16,26 +16,6 @@ var formSubmitHandler = function (event) {
     console.log(event);
 };
 
-var getUserRepos = function (user) {
-    // format the github api url
-    var apiUrl = "https://api.github.com/users/" + user + "/repos";
-    // make a request to the url
-    fetch(apiUrl)
-        .then(function (response) {
-            if (response.ok) {
-                response.json().then(function (data) {
-                    displayRepos(data, user);
-                });
-            } else {
-                 alert("Error:" + response.statusText);
-            }   
-        })
-        .catch(function(error) {
-            // notice this `.catch()` getting chained onto the end of the `.then()` method
-            alert("Unsble to connect to GitHub");
-        });
-};
-
 var displayRepos = function (repos, searchTerm) {
     if (repos.lenght === 0) {
         repoContainerEl.textContent = "No repositories found.";
@@ -43,14 +23,17 @@ var displayRepos = function (repos, searchTerm) {
     }
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
-
+    console.log(repos);
     // loop over repos
-    for (var i = 0; i < repos.lenght; i++) {
+    for (var i = 0; i < repos.length; i++) {
+        
         // format repo name  
         var repoName = repos[i].owner.login + "/" + repos[i].name;
         // create a container for each repo
-        var repoEl = document.createElement("div");
+        var repoEl = document.createElement("a");
         repoEl.classList = "list-item flex-row justify-space-between align-center";
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
+        console.log("I am here que onda");
         // create a span element to hold repository name
         var titleEl = document.createElement("span");
         titleEl.textContent = repoName;
@@ -70,7 +53,28 @@ var displayRepos = function (repos, searchTerm) {
         // append to container
         repoEl.appendChild(statusEl);
         repoContainerEl.appendChild(repoEl);
+        console.log(repoEl);
     }
+};
+
+var getUserRepos = function (user) {
+    // format the github api url
+    var apiUrl = "https://api.github.com/users/" + user + "/repos";
+    // make a request to the url
+    fetch(apiUrl)
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    displayRepos(data, user);
+                });
+            } else {
+                 alert("Error:" + response.statusText);
+            }   
+        })
+        .catch(function(error) {
+            // notice this `.catch()` getting chained onto the end of the `.then()` method
+            alert("Unsble to connect to GitHub");
+        });
 };
 
 userFormEl.addEventListener("submit", formSubmitHandler);
